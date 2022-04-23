@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "tim"
+version = "0.1.0"
+description = ""
+authors = ["LaBatata101 <labatata101@linuxmail.org>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+SQLAlchemy = "^1.4.35"
+fastapi = "^0.75.1"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-multipart = "^0.0.5"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+uvicorn = "^0.17.6"
+alembic = "^1.7.7"
+requests = "^2.27.1"
+
+[tool.poetry.scripts]
+tim = "tim.main:run"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
