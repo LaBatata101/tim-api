@@ -19,7 +19,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from tim.db import Base, SQLALCHEMY_DATABASE_URL
+from tim.db import Base
 
 target_metadata = Base.metadata
 

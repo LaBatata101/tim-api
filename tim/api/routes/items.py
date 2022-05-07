@@ -10,7 +10,7 @@ route = APIRouter(prefix="/items", tags=["items"], dependencies=[Depends(get_cur
 
 @route.get("/", response_model=list[schemas.Item])
 def read_items(
-    skip: int = Query(0, ge=0, lt=100), limit: int = Query(100, ge=0, lt=100), db: Session = Depends(get_db)
+    skip: int = Query(0, ge=0, le=100), limit: int = Query(100, ge=0, le=100), db: Session = Depends(get_db)
 ):
     items = crud.get_items(db, skip, limit)
     return items
