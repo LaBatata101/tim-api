@@ -1,17 +1,14 @@
-from fastapi import Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from fastapi import APIRouter
 
-from tim.db import schemas, crud
-from tim.api.dependencies import get_db, get_current_user
+from tim.api.dependencies import get_current_user, get_db
+from tim.db import crud, schemas
 
 route = APIRouter(prefix="/items", tags=["items"], dependencies=[Depends(get_current_user)])
 
 
 @route.get("/", response_model=list[schemas.Item])
-def read_items(
-    skip: int = Query(0, ge=0, le=100), limit: int = Query(100, ge=0, le=100), db: Session = Depends(get_db)
-):
+def read_items(skip: int = Query(0, ge=0), limit: int = Query(100, ge=0), db: Session = Depends(get_db)):
     items = crud.get_items(db, skip, limit)
     return items
 
