@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from tim.api import security
-from tim.db.schemas import Token
 from tim.api.dependencies import get_db
+from tim.schemas import Token
 
 route = APIRouter(tags=["login"])
 

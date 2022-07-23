@@ -1,7 +1,9 @@
 import secrets
+
 from jose import jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
+
 from tim.db import crud
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

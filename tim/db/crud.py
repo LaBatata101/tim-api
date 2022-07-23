@@ -1,8 +1,9 @@
-from typing import Optional, Union
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
+from tim import models, schemas
 from tim.api import security
-from . import models, schemas
 
 
 def get_user(db: Session, user_id: int) -> models.User:

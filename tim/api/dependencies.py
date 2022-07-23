@@ -1,12 +1,15 @@
-from jose import jwt
 from typing import Generator
-from sqlalchemy.orm import Session
-from pydantic import ValidationError
-from fastapi import HTTPException, Depends, status
+
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from jose import jwt
+from pydantic import ValidationError
+from sqlalchemy.orm import Session
+
+from tim import models, schemas
+from tim.db import SessionLocal, crud
 
 from . import security
-from tim.db import SessionLocal, crud, models, schemas
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/access-token")
 
