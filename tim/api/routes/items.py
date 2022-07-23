@@ -1,20 +1,26 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
+from tim import schemas
 from tim.api.dependencies import get_current_user, get_db
-from tim.db import crud, schemas
+from tim.db import crud
 
 route = APIRouter(prefix="/items", tags=["items"], dependencies=[Depends(get_current_user)])
 
 
 @route.get("/", response_model=list[schemas.Item])
-def read_items(skip: int = Query(0, ge=0), limit: int = Query(100, ge=0), db: Session = Depends(get_db)):
+def read_items(
+        skip: int = Query(0, ge=0),
+        limit: int = Query(100, ge=0),
+        db: Session = Depends(get_db),
+        _: schemas.User = Depends(get_current_user)
+):
     items = crud.get_items(db, skip, limit)
     return items
 
 
 @route.get("/{title}", response_model=schemas.Item)
-async def read_item(title: str, db: Session = Depends(get_db)):
+async def read_item(title: str, db: Session = Depends(get_db), _: schemas.User = Depends(get_current_user)):
     db_item = crud.get_item_by_title(db, title)
     if db_item is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
@@ -22,7 +28,12 @@ async def read_item(title: str, db: Session = Depends(get_db)):
 
 
 @route.put("/update/{item_id}", response_model=schemas.Item)
-async def update_item(item_id: int, item: schemas.ItemUpdate, db: Session = Depends(get_db)):
+async def update_item(
+    item_id: int,
+    item: schemas.ItemUpdate,
+    db: Session = Depends(get_db),
+    _: schemas.User = Depends(get_current_user)
+):
     db_item = crud.get_item(db, item_id)
     if db_item is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
@@ -30,7 +41,7 @@ async def update_item(item_id: int, item: schemas.ItemUpdate, db: Session = Depe
 
 
 @route.delete("/delete/{item_id}", response_model=schemas.Item)
-async def delete_item(item_id: int, db: Session = Depends(get_db)):
+async def delete_item(item_id: int, db: Session = Depends(get_db), _: schemas.User = Depends(get_current_user)):
     deleted_item = crud.delete_item(db, id=item_id)
     if deleted_item is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
@@ -38,7 +49,12 @@ async def delete_item(item_id: int, db: Session = Depends(get_db)):
 
 
 @route.get("/withdraw/{item_id}", response_model=schemas.Item)
-async def withdraw_item(item_id: int, quantity: int = Query(..., ge=0), db: Session = Depends(get_db)):
+async def withdraw_item(
+    item_id: int,
+    quantity: int = Query(..., ge=0),
+    db: Session = Depends(get_db),
+    _: schemas.User = Depends(get_current_user)
+):
     db_item = crud.get_item(db, item_id)
     if db_item is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Item not found")
