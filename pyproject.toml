@@ -19,6 +19,7 @@ alembic = "^1.7.7"
 [tool.poetry.dev-dependencies]
 pytest = "*"
 requests = "^2.27.1"
+Faker = "^13.11.1"
 
 [tool.poetry.scripts]
 tim = "tim.main:run"
