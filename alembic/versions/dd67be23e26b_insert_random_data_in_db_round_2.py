@@ -11,8 +11,8 @@ from sqlalchemy import orm
 
 from alembic import op
 from tim.db.crud import create_user_item
-from tim.db.models import Item
-from tim.db.schemas import ItemCreate
+from tim.models import Item
+from tim.schemas import ItemCreate
 
 
 # revision identifiers, used by Alembic.
