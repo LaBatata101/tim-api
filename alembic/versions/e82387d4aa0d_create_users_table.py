@@ -5,9 +5,12 @@ Revises:
 Create Date: 2022-04-17 19:41:24.452031
 
 """
-from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import orm
 
+from alembic import op
+from tim.db.crud import create_user
+from tim.schemas import UserCreate
 
 # revision identifiers, used by Alembic.
 revision = "e82387d4aa0d"
@@ -17,6 +20,9 @@ depends_on = None
 
 
 def upgrade():
+    bind = op.get_bind()
+    session = orm.Session(bind=bind)
+
     op.create_table(
         "users",
         sa.Column("id", sa.Integer, primary_key=True, index=True),
@@ -25,6 +31,7 @@ def upgrade():
         sa.Column("hashed_password", sa.String(60), nullable=False),
         sa.Column("is_admin", sa.Boolean, default=False),
     )
+    create_user(session, UserCreate(name="admin", email="admin@admin.com", is_admin=True, password="admin"))
 
 
 def downgrade():
